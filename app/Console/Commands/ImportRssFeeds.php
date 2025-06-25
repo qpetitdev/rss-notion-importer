@@ -2,11 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ImportedItem;
 use App\Services\Mappers\RssFeedMapperInterface;
 use App\Services\NotionService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use SimplePie\SimplePie;
+use Str;
 
 class ImportRssFeeds extends Command
 {
@@ -39,6 +41,8 @@ class ImportRssFeeds extends Command
         $sources = config('rss.sources');
 
         foreach ($sources as $sourceName => $sourceConfig) {
+            [$created, $ignored] = [0, 0];
+
             $this->info("Working on source: {$sourceName}");
 
             /** @var RssFeedMapperInterface $mapper */
@@ -62,7 +66,16 @@ class ImportRssFeeds extends Command
             foreach ($items as $item) {
                 try {
                     $notionItem = $mapper->map($item);
+
+                    if (ImportedItem::where('url', $notionItem->url)->exists()) {
+                        $ignored++;
+                        continue;
+                    }
+
                     $this->notionService->insert($notionItem);
+
+                    ImportedItem::create(["url" => $notionItem->url]);
+                    $created++;
                 } catch (\Throwable $e) {
                     $this->error("Error on : " . $item->get_title() . ' - ' . $e->getMessage());
                 }
@@ -71,7 +84,9 @@ class ImportRssFeeds extends Command
             }
 
             $this->output->progressFinish();
-            $this->info("{$total} item(s) for {$sourceName}\n");
+            $this->info("$total " . Str::plural("item", $total) . " imported for $sourceName :");
+            $this->info("   - $created " . Str::plural("item", $created) . " created");
+            $this->info("   - $ignored " . Str::plural("item", $ignored) . " ignored");
         }
     }
 }
