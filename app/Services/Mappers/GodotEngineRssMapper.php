@@ -5,16 +5,16 @@ namespace App\Services\Mappers;
 use App\Enums\NotionCategoryEnum;
 use App\Enums\NotionStatusEnum;
 
-class LaravelNewsRssMapper extends AbstractRssMapper
+class GodotEngineRssMapper extends AbstractRssMapper
 {
     protected function getSourceName(): string
     {
-        return "laravel_news";
+        return "godot_engine";
     }
 
     protected function getCategory(): NotionCategoryEnum
     {
-        return NotionCategoryEnum::BACKEND;
+        return NotionCategoryEnum::GAME_DEV;
     }
 
     protected function getStatus(): NotionStatusEnum

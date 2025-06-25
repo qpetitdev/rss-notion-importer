@@ -5,11 +5,11 @@ namespace App\Services\Mappers;
 use App\Enums\NotionCategoryEnum;
 use App\Enums\NotionStatusEnum;
 
-class LaravelNewsRssMapper extends AbstractRssMapper
+class MattStaufferRssMapper extends AbstractRssMapper
 {
     protected function getSourceName(): string
     {
-        return "laravel_news";
+        return "matt_stauffer";
     }
 
     protected function getCategory(): NotionCategoryEnum

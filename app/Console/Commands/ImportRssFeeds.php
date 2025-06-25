@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\ImportedItem;
-use App\Services\Mappers\RssFeedMapperInterface;
+use App\Services\Mappers\AbstractRssMapper;
 use App\Services\NotionService;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use SimplePie\SimplePie;
 use Str;
@@ -45,7 +44,7 @@ class ImportRssFeeds extends Command
 
             $this->info("Working on source: {$sourceName}");
 
-            /** @var RssFeedMapperInterface $mapper */
+            /** @var AbstractRssMapper $mapper */
             $mapper = app($sourceConfig['mapper']);
 
             $feed = new SimplePie();
@@ -68,6 +67,11 @@ class ImportRssFeeds extends Command
                     $notionItem = $mapper->map($item);
 
                     if (ImportedItem::where('url', $notionItem->url)->exists()) {
+                        $ignored++;
+                        continue;
+                    }
+
+                    if ($notionItem->publishedAt < now()->subMonths(3)) {
                         $ignored++;
                         continue;
                     }
