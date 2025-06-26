@@ -22,7 +22,17 @@ Le projet est conçu pour :
 
 Les flux RSS suivants sont déjà configurés et prêts à l'import :
 
-- laravel_news : https://feed.laravel-news.com/
+- Laravel news : https://feed.laravel-news.com/
+- Stitcher.io : https://stitcher.io/rss
+- Php weekly : https://www.phpweekly.com/feed/
+- Freek.dev : https://freek.dev/feed
+- Matt Stauffer blog : https://mattstauffer.com/blog/feed.atom'
+- Vue.Js news : https://news.vuejs.org/feed.xml
+- Dev.to (vuejs) : https://dev.to/feed/tag/vue
+- Godot engine : https://godotengine.org/rss.xml
+- Reddit game dev : https://www.reddit.com/r/gamedev/.rss
+- Martin fowler : https://martinfowler.com/feed.atom
+- Hacker news : https://hnrss.org/newest
 
 ---
 
